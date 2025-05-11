@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Los Santos Boxing Gym – Entrées</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+
+   <!-- jQuery Bracket -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/jquery-bracket@0.11.1/dist/jquery.bracket.min.css">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Styles perso -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- DataTables -->
+  <link rel="stylesheet"
+    href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet"
+    href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+
+  <!-- Toastr / NProgress / dialog-polyfill -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.5.6/dialog-polyfill.min.css">
+
+  <style>
+    /* Petit fix pour h1 dans sections */
+    section h1 {
+      font-size: 1.8rem;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sons -->
+  <audio id="errorSound"
+    src="https://www.myinstants.com/media/sounds/chui_dauEqBo.mp3"
+    preload="auto"></audio>
+  <audio id="successSound"
+    src="https://www.myinstants.com/media/sounds/applepay.mp3"
+    preload="auto"></audio>
+
+  <header>
+    <button data-section="public" class="nav-btn" title="Vue publique">
+      <i class="fas fa-eye"></i>
+    </button>
+    <button data-section="tournament" class="nav-btn hidden" title="Tournoi">
+      <i class="fas fa-sitemap"></i>
+    </button>
+    <button data-section="login" class="nav-btn" title="Connexion Admin">
+      <i class="fas fa-user-shield"></i>
+    </button>
+    <button id="logoutBtn" class="nav-btn hidden" title="Déconnexion">
+      <i class="fas fa-sign-out-alt"></i>
+    </button>
+
+    <div class="theme-switch-wrapper" title="Changer de thème">
+      <label for="themeToggleCheckbox" class="theme-switch">
+        <i class="fas fa-sun sun-icon"></i>
+        <input type="checkbox" id="themeToggleCheckbox">
+        <span class="slider"></span>
+        <i class="fas fa-moon moon-icon"></i>
+      </label>
+    </div>
+  </header>
+
+  <div id="lastRefresh" class="refresh-info"></div>
+
+  <main>
+    <!-- PUBLIC -->
+    <section id="public" class="active">
+      <h1>Liste des Entrées</h1>
+
+      <div class="form-container">
+        <label>Filtrer par type :
+          <select id="filterType">
+            <option value="">Tous</option>
+            <option>Simple</option>
+            <option>VIP</option>
+            <option>Premium</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="table-search">
+        <input type="text" id="searchPublic" placeholder="Recherche…">
+      </div>
+
+      <div class="table-container">
+        <table id="publicTable" class="display nowrap" style="width:100%">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Type</th>
+              <th>Entreprise</th>
+              <th>Organisateur</th>
+              <th>🎟️</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LOGIN -->
+    <dialog id="loginPrompt" role="dialog" aria-modal="true">
+      <h2>🔐 Connexion Admin</h2>
+      <label for="adminId">Identifiant</label>
+      <input type="text" id="adminId" placeholder="Identifiant">
+      <label for="adminPwd">Mot de passe</label>
+      <div class="input-group">
+        <input type="password" id="adminPwd" placeholder="Mot de passe">
+        <span class="toggle-password"><i class="fas fa-eye"></i></span>
+      </div>
+      <button id="loginBtn"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
+    </dialog>
+
+    <!-- ADMIN -->
+    <section id="admin" class="hidden">
+      <h1>Espace Admin</h1>
+
+      <button id="setupTournamentBtn" class="dt-button">
+        <i class="fas fa-sitemap"></i> Initialiser Tournoi
+      </button>
+
+      <div class="chart-container">
+        <!-- **Ici** on remet le canvas manquant : -->
+        <canvas id="statsChart"></canvas>
+      </div>
+
+      <div class="form-container">
+        <input id="nom" placeholder="Nom">
+        <input id="prenom" placeholder="Prénom">
+        <select id="type">
+          <option value="">Type</option>
+          <option>Simple</option>
+          <option>VIP</option>
+          <option>Premium</option>
+        </select>
+        <input id="entreprise" placeholder="Entreprise (optionnel)">
+        <label class="checkbox-label">
+          <input type="checkbox" id="combatForm"> Organisateur
+        </label>
+        <button id="addBtn"><i class="fas fa-plus"></i> Ajouter</button>
+        <button id="cancelEditBtn" class="hidden"><i class="fas fa-ban"></i> Annuler</button>
+      </div>
+
+      <div class="table-search">
+        <input type="text" id="searchAdmin" placeholder="Recherche…">
+      </div>
+
+      <div class="table-container">
+        <table id="adminTable" class="display nowrap" style="width:100%">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Type</th>
+              <th>Entreprise</th>
+              <th>Organisateur</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TICKET -->
+    <dialog id="ticketModal" role="dialog" aria-modal="true">
+      <h2>🎟️ ACCRÉDITATION</h2>
+      <div class="badge-content">
+        <div class="badge-header">
+          <div class="avatar" id="ticketAvatar"></div>
+          <div class="info">
+            <p id="ticketName"></p>
+            <p id="ticketCompany"></p>
+          </div>
+        </div>
+        <div id="qrcode"></div>
+      </div>
+      <div class="ticket-actions">
+        <button id="downloadQRBtn"><i class="fas fa-download"></i> Télécharger</button>
+        <button id="printBtn"><i class="fas fa-print"></i> Imprimer</button>
+        <button id="closeTicketBtn"><i class="fas fa-times"></i> Fermer</button>
+      </div>
+    </dialog>
+
+    <!-- TOURNOI -->
+    <section id="tournament" class="hidden">
+      <h1>Arbre du Tournoi</h1>
+      <div id="bracket"></div>
+    </section>
+  </main>
+
+  <!-- Librairies JS -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-bracket@0.11.1/dist/jquery.bracket.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/fr.js"></script>
+  <script> dayjs.locale('fr'); </script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.5.6/dialog-polyfill.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Votre code -->
+  <script type="module" src="js/app.js" defer></script>
+</body>
+</html>

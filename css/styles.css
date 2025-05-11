@@ -1,0 +1,400 @@
+:root {
+  --main:    #ff007f;
+  --bg:      #0d0d0d;
+  --light:   #1a1a1a;
+  --accent:  #00bcd4;
+  --error:   #e53935;
+  --text:    #fff;
+}
+/* Mode clair */
+.light-theme {
+  --bg:    #fff;
+  --light: #f0f0f0;
+  --text:  #222;
+}
+
+* { box-sizing: border-box; margin:0; padding:0 }
+.hidden { display:none!important }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI',sans-serif;
+  transition: background .3s, color .3s;
+}
+
+/* Header */
+header {
+  background: var(--light);
+  display: flex; justify-content: center; align-items: center;
+  gap: 1rem; padding: 1rem;
+  box-shadow: 0 0 10px var(--main);
+}
+.nav-btn {
+  background: var(--main); color: var(--text);
+  border:none; padding:.6rem .8rem; font-size:1.2rem;
+  border-radius:4px; box-shadow:0 0 8px var(--main);
+  cursor:pointer; transition:transform .3s, box-shadow .3s;
+}
+.nav-btn:hover {
+  transform:scale(1.1); box-shadow:0 0 16px var(--main);
+}
+
+/* Dark/light switch */
+.theme-switch-wrapper {
+  display:flex; align-items:center;
+}
+.theme-switch {
+  position:relative; display:flex; align-items:center; gap:.5rem;
+}
+.theme-switch input {
+  position:absolute; opacity:0; width:0; height:0;
+}
+.theme-switch .slider {
+  width:50px; height:24px; background:#555; border-radius:34px;
+  position:relative; transition:background .3s;
+}
+.theme-switch .slider::before {
+  content:''; position:absolute;
+  width:18px; height:18px; top:3px; left:3px;
+  background:var(--text); border-radius:50%; transition:transform .3s;
+}
+.theme-switch input:checked + .slider {
+  background:var(--accent);
+}
+.theme-switch input:checked + .slider::before {
+  transform:translateX(26px);
+}
+.sun-icon, .moon-icon { color:var(--text); font-size:1rem; pointer-events:none; }
+.theme-switch input:checked ~ .sun-icon { opacity:.3 }
+.theme-switch input:not(:checked) ~ .moon-icon { opacity:.3 }
+
+/* Refresh info */
+.refresh-info {
+  text-align:center; margin:.5rem 0; color:#aaa; font-size:.9rem;
+}
+
+/* Forms */
+.form-container {
+  display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
+  margin-bottom:1.5rem;
+}
+.form-container input,
+.form-container select,
+.form-container button {
+  background:var(--light); color:var(--text);
+  border:none; padding:.6rem 1rem; border-radius:6px;
+  transition:transform .3s, background .3s;
+}
+.form-container button { background:var(--accent) }
+.form-container button:hover {
+  transform:scale(1.05); background:var(--main);
+}
+.checkbox-label {
+  display:flex; align-items:center; gap:.3rem; color:var(--text);
+}
+.checkbox-label input {
+  accent-color: var(--accent);
+}
+
+/* Table search */
+.table-search {
+  text-align:right; margin-bottom:.5rem;
+}
+.table-search input {
+  background:var(--light); color:var(--text);
+  border:1px solid var(--accent); padding:6px 10px;
+  border-radius:6px; box-shadow:0 0 5px var(--accent);
+  width:200px; transition:box-shadow .3s;
+}
+.table-search input:focus {
+  outline:none; box-shadow:0 0 10px var(--accent);
+}
+
+/* Tables */
+.table-container { overflow-x:auto; margin-bottom:1.5rem }
+table.dataTable {
+  width:100%; background:var(--light); border-radius:10px;
+}
+table.dataTable th,
+table.dataTable td {
+  padding:12px; color:var(--text);
+}
+table.dataTable tbody tr:hover {
+  background:rgba(255,255,255,0.05);
+}
+
+/* DataTables buttons */
+.dt-button {
+  background:var(--accent) !important;
+  color:var(--text) !important;
+  border:none !important; border-radius:4px !important;
+  margin-right:.3rem !important;
+  box-shadow:0 0 5px var(--accent) !important;
+  transition:background .3s, box-shadow .3s;
+}
+.dt-button:hover {
+  background:var(--main) !important;
+  box-shadow:0 0 10px var(--main) !important;
+}
+.dataTables_wrapper .dataTables_filter {
+  text-align:left; margin-bottom:1rem;
+}
+.dataTables_wrapper .dataTables_filter input {
+  background:var(--light); color:var(--text);
+  border:1px solid var(--accent); padding:6px 10px;
+  border-radius:6px; box-shadow:0 0 5px var(--accent);
+}
+
+/* Ticket button public */
+.ticket-public-btn {
+  background:var(--accent); color:var(--text);
+  border:none; border-radius:6px;
+  width:36px; height:36px;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:1.2rem;
+  box-shadow:0 0 8px var(--accent);
+  transition:transform .3s, box-shadow .3s;
+  cursor:pointer;
+}
+.ticket-public-btn:hover {
+  transform:scale(1.1); box-shadow:0 0 16px var(--accent);
+}
+
+/* Admin action buttons */
+.edit-btn, .delete-btn, .ticket-btn {
+  border:none; border-radius:4px; padding:4px 8px;
+  color:#fff; font-size:1rem; cursor:pointer; margin-right:4px;
+}
+.edit-btn {
+  background:var(--main); box-shadow:0 0 6px var(--main);
+  transition:transform .2s, box-shadow .2s;
+}
+.edit-btn:hover { transform:scale(1.1); box-shadow:0 0 12px var(--main); }
+.delete-btn {
+  background:var(--error); box-shadow:0 0 6px var(--error);
+  transition:transform .2s, box-shadow .2s;
+}
+.delete-btn:hover { transform:scale(1.1); box-shadow:0 0 12px var(--error); }
+.ticket-btn {
+  background:var(--accent); box-shadow:0 0 6px var(--accent);
+  transition:transform .2s, box-shadow .2s;
+}
+.ticket-btn:hover { transform:scale(1.1); box-shadow:0 0 12px var(--accent); }
+
+/* Chart */
+.chart-container {
+  max-width:300px; width:100%; margin:0 auto 1.5rem;
+}
+.chart-container canvas {
+  width:100% !important; height:auto !important;
+}
+
+/* Popup login */
+dialog#loginPrompt {
+  border:2px solid var(--accent); border-radius:10px;
+  padding:2rem; background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(8px); color:var(--text);
+  box-shadow:0 0 20px var(--accent); width:320px; max-width:90%;
+}
+dialog#loginPrompt h2 {
+  margin-bottom:1rem; color:var(--accent); text-align:center;
+}
+dialog#loginPrompt label {
+  display:block; margin-top:.5rem; color:var(--text);
+}
+dialog#loginPrompt input {
+  width:100%; padding:.8rem; margin:.4rem 0 1rem;
+  background:var(--light); color:var(--text);
+  border:1px solid var(--accent); border-radius:6px;
+  box-shadow:0 0 5px var(--accent); transition:box-shadow .3s;
+}
+dialog#loginPrompt input:focus {
+  outline:none; box-shadow:0 0 10px var(--accent);
+}
+dialog#loginPrompt button {
+  width:100%; margin-top:1rem; padding:.8rem;
+  background:var(--accent); color:var(--text);
+  border:none; border-radius:6px; font-size:1rem; font-weight:bold;
+  box-shadow:0 0 8px var(--accent); cursor:pointer;
+  transition:background .3s;
+}
+dialog#loginPrompt button:hover {
+  background:var(--main);
+}
+
+/* Modal ticket */
+dialog#ticketModal {
+  border:2px solid var(--accent); border-radius:10px;
+  padding:1.5rem; background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(6px); color:var(--text);
+  box-shadow:0 0 20px var(--accent); width:320px; max-width:90%;
+}
+dialog#ticketModal h2 {
+  margin-bottom:1rem; color:var(--accent); text-align:center;
+}
+.badge-content {
+  background:var(--light); border:2px solid var(--accent);
+  border-radius:10px; padding:1rem; margin-bottom:1rem;
+}
+.badge-header {
+  display:flex; align-items:center; gap:1rem; margin-bottom:1rem;
+}
+.avatar {
+  width:48px; height:48px; background:var(--accent);
+  color:var(--light); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem; font-weight:bold;
+  box-shadow:0 0 8px var(--accent);
+}
+.info p { margin:0; color:var(--text); }
+.ticket-actions {
+  display:flex; gap:.5rem;
+}
+.ticket-actions button {
+  flex:1; background:var(--accent); color:var(--text);
+  border:none; border-radius:6px; padding:.6rem;
+  display:flex; align-items:center; justify-content:center;
+  gap:.3rem; box-shadow:0 0 6px var(--accent);
+  transition:background .3s, box-shadow .3s; cursor:pointer;
+}
+.ticket-actions button:hover {
+  background:var(--main); box-shadow:0 0 12px var(--main);
+}
+
+/* --------------------------------------------------------------------------------
+   Checkbox “Combat” : cadre néon + coche SVG + animation
+   -------------------------------------------------------------------------------- */
+table.dataTable td input[type="checkbox"],
+.checkbox-label input[type="checkbox"] {
+  /* masquer l’UI native */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  /* dimensions et centrage */
+  width: 22px;
+  height: 22px;
+  display: block;
+  margin: 0 auto;
+
+  /* cadre néon */
+  background-color: var(--light);
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+
+  /* préparer le SVG en fond (vide par défaut) */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 60% 60%;
+
+  /* ombre et transition */
+  box-shadow: 0 0 4px rgba(0,0,0,0.4);
+  transition: 
+    background-color .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease,
+    transform .2s ease;
+
+  cursor: pointer;
+}
+
+/* Hover actif */
+table.dataTable td input[type="checkbox"]:not(:disabled):hover,
+.checkbox-label input[type="checkbox"]:hover {
+  border-color: var(--main);
+  box-shadow: 0 0 8px var(--accent), 0 0 4px var(--main);
+  transform: scale(1.1);
+}
+
+/* État coché : fond + SVG check blanc */
+table.dataTable td input[type="checkbox"]:checked,
+.checkbox-label input[type="checkbox"]:checked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='10' viewBox='0 0 12 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5l3 3 7-7' stroke='%23FFFFFF' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+}
+
+/* État désactivé (vue publique) */
+table.dataTable td input[type="checkbox"]:disabled {
+  background-color: var(--light);
+  border-color: var(--light);
+  opacity: 0.8;
+  box-shadow: none;
+  cursor: default;
+}
+
+/* Désactivé + coché */
+table.dataTable td input[type="checkbox"]:disabled:checked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='10' viewBox='0 0 12 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5l3 3 7-7' stroke='%23FFFFFF' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  box-shadow: 0 0 6px var(--accent);
+}
+
+/* Aligner la colonne “Combat” au centre */
+table.dataTable th:nth-child(5),
+table.dataTable td:nth-child(5) {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* --------------------------------------------------------------------------------
+   Checkbox “Combat” dans le formulaire Admin
+   -------------------------------------------------------------------------------- */
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--text);
+  cursor: pointer;
+}
+.checkbox-label input[type="checkbox"] {
+  margin: 0;
+}
+.checkbox-label input[type="checkbox"]:checked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='10' viewBox='0 0 12 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5l3 3 7-7' stroke='%23FFFFFF' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+}
+.checkbox-label input[type="checkbox"]:not(:checked) {
+  background-color: var(--light);
+  border-color: var(--accent);
+  background-image: none;
+}
+
+/* === Section Tournoi & Bracket === */
+#tournament h1 {
+  text-align: center;
+  color: var(--main);
+  margin: 2rem 0 1rem;
+}
+#bracket {
+  overflow-x: auto;
+  padding: 1rem;
+  background: var(--light);
+  border-radius: 8px;
+  box-shadow: 0 0 12px var(--main);
+}
+
+/* === jQuery Bracket styling === */
+.jqBracket .team {
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  color: var(--text);
+  box-shadow: 0 0 6px var(--accent);
+  border-radius: 4px;
+  padding: 4px 8px;
+  transition: background .2s, color .2s;
+}
+.jqBracket .team:hover {
+  background: var(--accent);
+  color: var(--light);
+}
+.jqBracket .connector {
+  border-color: var(--accent) !important;
+}
+.jqBracket .match.winner .team {
+  border-color: var(--main) !important;
+}
